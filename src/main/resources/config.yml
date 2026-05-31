@@ -1,0 +1,26 @@
+# ================================
+#  GerenciarVanish v1.0.0
+#  Compatível: Spigot, Paper, Purpur, Folia
+#  Versões: 1.19 até 26.1.2
+# ================================
+
+protecao:
+  interagir: true
+  quebrar: true
+  colocar: true
+  dropar: true
+  pegar: true
+  mobs: true
+  hit: true
+
+mensagens:
+  sem-permissao: "&cVoce nao tem permissao!"
+  vanish-ativado: "&aVanish ativado! Voce esta invisivel."
+  vanish-desativado: "&eVanish desativado! Voce esta visivel."
+  vanish-outro: "&aVanish de &f{player} &aagora esta {status}."
+  status-ativado: "&cATIVADO"
+  status-desativado: "&aDESATIVADO"
+  jogador-offline: "&cJogador &f{player} &cnao encontrado."
+  reload-sucesso: "&aConfiguracao recarregada!"
+  jogadores-vanished: "&7Existem &f{count} &7jogador(es) em vanish."
+  lista-vanished: "&6=== Jogadores em Vanish ==="
