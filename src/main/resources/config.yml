@@ -1,26 +1,32 @@
 # ================================
-#  GerenciarVanish v1.0.0
-#  Compatível: Spigot, Paper, Purpur, Folia
-#  Versões: 1.19 até 26.1.2
+#  Vanish+ v1.2.0
+#  Compativel: Spigot, Paper, Purpur, Folia
+#  Versoes: 1.19 ate 26.1.2
 # ================================
 
-protecao:
-  interagir: true
-  quebrar: true
-  colocar: true
-  dropar: true
-  pegar: true
-  mobs: true
-  hit: true
+# Idioma do plugin (en, pt, es, fr, de)
+# Language of the plugin (en, pt, es, fr, de)
+language: "en"
 
-mensagens:
-  sem-permissao: "&cVoce nao tem permissao!"
-  vanish-ativado: "&aVanish ativado! Voce esta invisivel."
-  vanish-desativado: "&eVanish desativado! Voce esta visivel."
-  vanish-outro: "&aVanish de &f{player} &aagora esta {status}."
-  status-ativado: "&cATIVADO"
-  status-desativado: "&aDESATIVADO"
-  jogador-offline: "&cJogador &f{player} &cnao encontrado."
-  reload-sucesso: "&aConfiguracao recarregada!"
-  jogadores-vanished: "&7Existem &f{count} &7jogador(es) em vanish."
-  lista-vanished: "&6=== Jogadores em Vanish ==="
+# Configuracoes gerais
+settings:
+  # Permitir vanish no servidor
+  vanish-enabled: true
+  # Quando sair do servidor com vanish, reativar ao entrar
+  save-vanish-on-quit: true
+  # Mostrar jogadores com permissao vanish.see no TAB
+  show-vanished-in-tab: false
+  # Cooldown entre toggles de vanish (ms, minimo 250)
+  cooldown-ms: 1000
+
+# Protecoes (para quem esta em vanish)
+protection:
+  block-interact: true
+  block-break: true
+  block-place: true
+  item-drop: true
+  item-pickup: true
+  mob-target: true
+  pvp: true
+  # Abrir baus silenciosamente (sem som/animacao)
+  silent-chest: true

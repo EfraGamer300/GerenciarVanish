@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "dev.wolfstudios"
-version = "1.0.0"
+version = "1.2.0"
 
 val mcApiVersion = project.findProperty("mc") as? String ?: "1.21.4-R0.1-SNAPSHOT"
 
@@ -27,15 +27,6 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.jar {
-    archiveBaseName.set("GerenciarVanish-${project.version}")
-}
-
-tasks.named("build") {
-    doFirst {
-        println("Build com Paper API: $mcApiVersion")
-    }
-    doLast {
-        val jar = tasks.jar.get().archiveFile.get().asFile
-        println("Gerado: ${jar.name}")
-    }
+    archiveBaseName.set("Vanish+")
+    archiveVersion.set(project.version.toString())
 }

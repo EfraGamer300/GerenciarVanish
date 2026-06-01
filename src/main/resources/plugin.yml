@@ -1,26 +1,46 @@
-name: GerenciarVanish
-version: 1.0.0
+name: Vanish+
+version: 1.2.0
 main: dev.wolfstudios.vanish.VanishPlugin
 api-version: "1.19"
-description: Plugin de vanish para administração. Suporta Spigot, Paper, Purpur e Folia.
+description: Plugin de vanish para administracao. Suporta Spigot, Paper, Purpur e Folia (1.19-1.26.1.2).
 authors: [WolfStudios]
 folia-supported: true
 commands:
   vanish:
-    description: Alternar vanish (invisibilidade)
-    usage: /vanish [jogador|reload|list]
+    description: Alternar vanish
+    usage: /vanish [jogador|reload|list|reveal|revealall]
     aliases: [v]
-    permission: gerenciar.vanish.use
+    permission: vanish.use
+  vanishconfig:
+    description: Abrir GUI de configuracao
+    usage: /vanishconfig
+    aliases: [vcfg, vconfig]
+    permission: vanish.config
 permissions:
-  gerenciar.vanish.use:
+  vanish.use:
     description: Permite usar /vanish
     default: op
-  gerenciar.vanish.see:
+  vanish.see:
     description: Permite ver jogadores em vanish
     default: op
-  gerenciar.vanish.others:
+  vanish.others:
     description: Permite aplicar vanish em outros jogadores
     default: op
-  gerenciar.reload:
-    description: Permite recarregar o plugin
+  vanish.reload:
+    description: Permite recarregar a configuracao
+    default: op
+  vanish.config:
+    description: Permite abrir a GUI de configuracao
+    default: op
+  vanish.reveal:
+    description: Permite revelar um jogador especifico do vanish
+    default: op
+  vanish.revealall:
+    description: Permite revelar todos os jogadores do vanish
+    default: op
+  vanish.silentchest:
+    description: Permite abrir baus silenciosamente no vanish
+    default: op
+  vanish.bypass.protection:
+    description: Ignora protecoes do vanish
     default: op
