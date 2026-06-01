@@ -21,7 +21,7 @@ VERSIONS=(
     "1.21.4:1.21.4-R0.1-SNAPSHOT"
     "1.21.7:1.21.7-R0.1-SNAPSHOT"
     "1.21.9:1.21.9-R0.1-SNAPSHOT"
-    "26.1.2:26.1.2.build.66-stable"
+    "26.1.2:1.21.5-R0.1-SNAPSHOT"
 )
 
 OUTPUT_DIR="build/release"
