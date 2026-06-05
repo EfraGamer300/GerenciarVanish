@@ -46,7 +46,7 @@ for entry in "${VERSIONS[@]}"; do
     echo ""
     echo ">>> MC ${mc_short} (API: ${api_ver})"
 
-    if ./gradlew jar -Pmc="${api_ver}" --no-daemon --quiet 2>/dev/null; then
+    if ./gradlew shadowJar -Pmc="${api_ver}" --no-daemon --quiet 2>/dev/null; then
         BUILT_JAR=$(find build/libs -name "Vanish+*.jar" ! -name "*sources*" 2>/dev/null | head -1)
         if [ -n "$BUILT_JAR" ] && [ -f "$BUILT_JAR" ]; then
             cp "$BUILT_JAR" "$OUTPUT_JAR"

@@ -1,5 +1,6 @@
 plugins {
     java
+    id("com.gradleup.shadow") version "9.3.1"
 }
 
 group = "dev.wolfstudios"
@@ -19,13 +20,25 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:$mcApiVersion")
+    implementation("org.bstats:bstats-bukkit:3.2.1")
 }
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
-tasks.jar {
+tasks.shadowJar {
     archiveBaseName.set("Vanish+")
     archiveVersion.set(project.version.toString())
+    archiveClassifier.set("")
+    configurations = project.configurations.runtimeClasspath.map { setOf(it) }
+    dependencies {
+        exclude { it.moduleGroup != "org.bstats" }
+    }
+    relocate("org.bstats", project.group.toString())
+}
+
+tasks.jar {
+    dependsOn(tasks.shadowJar)
+    enabled = false
 }

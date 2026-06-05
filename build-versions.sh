@@ -37,7 +37,7 @@ for entry in "${VERSIONS[@]}"; do
     echo ""
     echo "MC $mc_ver (API: $api_ver)"
 
-    if ./gradlew jar -Pmc="$api_ver" --no-daemon -q 2>/dev/null; then
+    if ./gradlew shadowJar -Pmc="$api_ver" --no-daemon -q 2>/dev/null; then
         BUILT_JAR=$(find build/libs -name "*.jar" ! -name "*sources*" 2>/dev/null | head -1)
         if [ -n "$BUILT_JAR" ]; then
             cp "$BUILT_JAR" "$OUTPUT_JAR"
