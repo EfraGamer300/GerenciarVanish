@@ -114,10 +114,13 @@ public class VanishPlugin extends JavaPlugin implements Listener {
         Player player = e.getPlayer();
         vanishManager.hideVanishedFrom(player);
 
-        if (getConfig().getBoolean("settings.save-vanish-on-quit", true)) {
-            if (savedVanish.contains(player.getUniqueId())) {
-                vanishManager.vanishPlayer(player);
-                savedVanish.remove(player.getUniqueId());
+        if (getConfig().getBoolean("settings.save-vanish-on-quit", true)
+                && savedVanish.contains(player.getUniqueId())) {
+            vanishManager.vanishPlayer(player);
+            savedVanish.remove(player.getUniqueId());
+
+            if (getConfig().getBoolean("settings.silent-joinquit", false)) {
+                e.joinMessage(null);
             }
         }
 
@@ -131,12 +134,19 @@ public class VanishPlugin extends JavaPlugin implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
-        if (vanishManager.isVanished(player)) {
+        boolean wasVanished = vanishManager.isVanished(player);
+
+        if (wasVanished) {
             savedVanish.add(uuid);
             vanishManager.removeVanished(uuid);
+
+            if (getConfig().getBoolean("settings.silent-joinquit", false)) {
+                e.quitMessage(null);
+            }
         } else {
             savedVanish.remove(uuid);
         }
+
         if (!vanishManager.getVanishedPlayers().isEmpty() || !savedVanish.isEmpty()) {
             storage.saveVanished(vanishManager.getVanishedPlayers());
         }
