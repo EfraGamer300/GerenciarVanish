@@ -28,7 +28,7 @@ OUTPUT_DIR="build/release"
 mkdir -p "$OUTPUT_DIR"
 
 echo "============================================"
-echo "  VanishPlus v1.2.0 — Multi-Version Build"
+echo "  VanishPlus v1.3.0 — Multi-Version Build"
 echo "  MC: 1.19 -> 26.1.2"
 echo "  Backend: Spigot/Paper/Purpur (Folia compatible)"
 echo "============================================"
@@ -41,7 +41,7 @@ for entry in "${VERSIONS[@]}"; do
     mc_short="${entry%%:*}"
     api_ver="${entry##*:}"
     mc_tag=$(echo "$mc_short" | tr '.' '_')
-    OUTPUT_JAR="$OUTPUT_DIR/VanishPlus-v1.2.0-mc${mc_short}.jar"
+    OUTPUT_JAR="$OUTPUT_DIR/VanishPlus-v1.3.0-mc${mc_short}.jar"
 
     echo ""
     echo ">>> MC ${mc_short} (API: ${api_ver})"
