@@ -22,11 +22,10 @@ public class VanishConfigCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("§cApenas jogadores!");
             return true;
         }
-        Player player = (Player) sender;
         if (!player.hasPermission("vanish.config")) {
             player.sendMessage(lang.t("no-permission"));
             return true;

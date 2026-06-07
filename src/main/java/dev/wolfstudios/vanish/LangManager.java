@@ -5,8 +5,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 public class LangManager {
@@ -16,7 +14,7 @@ public class LangManager {
     private FileConfiguration lang;
     private String language = "en";
 
-    private static final Set<String> SUPPORTED = new HashSet<>(Arrays.asList("en", "pt", "es", "fr", "de"));
+    private static final Set<String> SUPPORTED = Set.of("en", "pt", "es", "fr", "de");
 
     public LangManager(VanishPlugin plugin) {
         this.plugin = plugin;
@@ -26,16 +24,14 @@ public class LangManager {
         language = plugin.getConfig().getString("language", "en");
 
         if (!SUPPORTED.contains(language)) {
-            plugin.getLogger().warning("[Vanish+] Lingua '" + language + "' nao suportada. Usando 'en'.");
-            plugin.getLogger().warning("[Vanish+] Language '" + language + "' not supported. Using 'en'.");
-            LogManager lm = plugin.getLogManager();
-            if (lm != null) lm.log("SYSTEM", "Language", "Linguagem invalida '" + language + "', fallback para 'en'");
+            plugin.getLogger().warning("[Vanish+] Lingua '%s' nao suportada. Usando 'en'.".formatted(language));
+            plugin.getLogger().warning("[Vanish+] Language '%s' not supported. Using 'en'.".formatted(language));
+            var lm = plugin.logManager();
+            if (lm != null) lm.log("SYSTEM", "Language", "Linguagem invalida '%s', fallback para 'en'".formatted(language));
             language = "en";
         }
 
-        for (String langKey : SUPPORTED) {
-            plugin.saveResource("lang/" + langKey + ".yml", false);
-        }
+        SUPPORTED.forEach(langKey -> plugin.saveResource("lang/" + langKey + ".yml", false));
 
         langFile = new File(plugin.getDataFolder(), "lang/" + language + ".yml");
         if (!langFile.exists()) {

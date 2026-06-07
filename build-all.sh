@@ -1,5 +1,5 @@
 #!/bin/bash
-# Vanish+ v1.2.0 — Build all MC versions for Spigot/Paper/Purpur
+# VanishPlus v1.2.0 — Build all MC versions for Spigot/Paper/Purpur
 # Requires: Java 21, Gradle 8.14+
 # Supports: 1.19, 1.19.2-4, 1.20-1.20.6, 1.21-1.21.9, 26.1.2
 
@@ -28,7 +28,7 @@ OUTPUT_DIR="build/release"
 mkdir -p "$OUTPUT_DIR"
 
 echo "============================================"
-echo "  Vanish+ v1.2.0 — Multi-Version Build"
+echo "  VanishPlus v1.2.0 — Multi-Version Build"
 echo "  MC: 1.19 -> 26.1.2"
 echo "  Backend: Spigot/Paper/Purpur (Folia compatible)"
 echo "============================================"
@@ -41,13 +41,13 @@ for entry in "${VERSIONS[@]}"; do
     mc_short="${entry%%:*}"
     api_ver="${entry##*:}"
     mc_tag=$(echo "$mc_short" | tr '.' '_')
-    OUTPUT_JAR="$OUTPUT_DIR/Vanish+-v1.2.0-mc${mc_short}.jar"
+    OUTPUT_JAR="$OUTPUT_DIR/VanishPlus-v1.2.0-mc${mc_short}.jar"
 
     echo ""
     echo ">>> MC ${mc_short} (API: ${api_ver})"
 
     if ./gradlew shadowJar -Pmc="${api_ver}" --no-daemon --quiet 2>/dev/null; then
-        BUILT_JAR=$(find build/libs -name "Vanish+*.jar" ! -name "*sources*" 2>/dev/null | head -1)
+        BUILT_JAR=$(find build/libs -name "VanishPlus*.jar" ! -name "*sources*" 2>/dev/null | head -1)
         if [ -n "$BUILT_JAR" ] && [ -f "$BUILT_JAR" ]; then
             cp "$BUILT_JAR" "$OUTPUT_JAR"
             SIZE=$(du -h "$OUTPUT_JAR" | cut -f1)

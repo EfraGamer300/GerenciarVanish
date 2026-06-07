@@ -8,15 +8,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SilentChestListener implements Listener {
 
     private final VanishManager vanishManager;
     private final SilentChestManager silentChestManager;
-    private final Set<UUID> opening = new HashSet<>();
+    private final Set<UUID> opening = ConcurrentHashMap.newKeySet();
 
     public SilentChestListener(VanishManager vanishManager, SilentChestManager silentChestManager) {
         this.vanishManager = vanishManager;
@@ -25,42 +25,29 @@ public class SilentChestListener implements Listener {
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent e) {
-        if (!(e.getPlayer() instanceof Player)) return;
-        Player player = (Player) e.getPlayer();
+        if (!(e.getPlayer() instanceof Player player)) return;
         if (!vanishManager.isVanished(player)) return;
         if (!silentChestManager.hasSilentChest(player.getUniqueId())) return;
+        if (!isContainer(e.getInventory().getType())) return;
 
-        InventoryType type = e.getInventory().getType();
-        if (!isContainer(type)) return;
-
-        if (opening.contains(player.getUniqueId())) {
-            opening.remove(player.getUniqueId());
+        UUID uuid = player.getUniqueId();
+        if (opening.contains(uuid)) {
+            opening.remove(uuid);
             return;
         }
 
         e.setCancelled(true);
-        opening.add(player.getUniqueId());
+        opening.add(uuid);
         player.openInventory(e.getInventory());
     }
 
     private boolean isContainer(InventoryType type) {
-        return type == InventoryType.CHEST
-                || type == InventoryType.BARREL
-                || type == InventoryType.ENDER_CHEST
-                || type == InventoryType.SHULKER_BOX
-                || type == InventoryType.HOPPER
-                || type == InventoryType.DISPENSER
-                || type == InventoryType.DROPPER
-                || type == InventoryType.FURNACE
-                || type == InventoryType.BLAST_FURNACE
-                || type == InventoryType.SMOKER
-                || type == InventoryType.BREWING
-                || type == InventoryType.ANVIL
-                || type == InventoryType.ENCHANTING
-                || type == InventoryType.GRINDSTONE
-                || type == InventoryType.LOOM
-                || type == InventoryType.STONECUTTER
-                || type == InventoryType.CARTOGRAPHY
-                || type == InventoryType.SMITHING;
+        return switch (type) {
+            case CHEST, BARREL, ENDER_CHEST, SHULKER_BOX, HOPPER,
+                 DISPENSER, DROPPER, FURNACE, BLAST_FURNACE, SMOKER,
+                 BREWING, ANVIL, ENCHANTING, GRINDSTONE, LOOM,
+                 STONECUTTER, CARTOGRAPHY, SMITHING -> true;
+            default -> false;
+        };
     }
 }

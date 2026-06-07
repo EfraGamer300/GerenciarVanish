@@ -1,5 +1,5 @@
 # ================================
-#  Vanish+ v1.2.0
+#  Vanish+ v1.3.0
 #  Compativel: Spigot, Paper, Purpur, Folia
 #  Versoes: 1.19 ate 26.1.2
 # ================================
@@ -18,6 +18,17 @@ settings:
   show-vanished-in-tab: false
   # Cooldown entre toggles de vanish (ms, minimo 250)
   cooldown-ms: 1000
+
+# Armazenamento: yaml, sqlite, mysql
+storage:
+  type: "yaml"
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "vanishplus"
+    username: "root"
+    password: ""
+    table-prefix: "vp_"
 
 # Protecoes (para quem esta em vanish)
 protection:

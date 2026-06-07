@@ -17,10 +17,12 @@ public class SilentChestManager {
     }
 
     public void toggle(UUID uuid) {
-        if (silentChestPlayers.contains(uuid)) {
-            silentChestPlayers.remove(uuid);
-        } else {
-            silentChestPlayers.add(uuid);
+        synchronized (silentChestPlayers) {
+            if (silentChestPlayers.contains(uuid)) {
+                silentChestPlayers.remove(uuid);
+            } else {
+                silentChestPlayers.add(uuid);
+            }
         }
     }
 

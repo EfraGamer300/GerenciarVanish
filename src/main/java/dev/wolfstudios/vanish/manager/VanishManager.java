@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,8 +17,8 @@ import java.util.UUID;
 public class VanishManager {
 
     private final VanishPlugin plugin;
-    private final Set<UUID> vanished = Collections.synchronizedSet(new HashSet<UUID>());
-    private final Map<UUID, Long> vanishCooldowns = Collections.synchronizedMap(new HashMap<UUID, Long>());
+    private final Set<UUID> vanished = Collections.synchronizedSet(new HashSet<>());
+    private final Map<UUID, Long> vanishCooldowns = Collections.synchronizedMap(new HashMap<>());
     private final Map<UUID, Boolean> prevAllowFlight = Collections.synchronizedMap(new HashMap<>());
     private final Map<UUID, Boolean> prevFlying = Collections.synchronizedMap(new HashMap<>());
     private final LangManager lang;
@@ -95,7 +94,9 @@ public class VanishManager {
             if (!online.hasPermission("vanish.see")) {
                 hideFrom(online, player);
             } else if (!online.getUniqueId().equals(uuid)) {
-                online.sendMessage(lang.t("vanish-staff-notify").replace("{player}", player.getName()).replace("{status}", lang.raw("status-on")));
+                online.sendMessage(lang.t("vanish-staff-notify")
+                        .replace("{player}", player.getName())
+                        .replace("{status}", lang.raw("status-on")));
             }
         }
 
@@ -132,16 +133,15 @@ public class VanishManager {
     public void revealAll() {
         for (UUID uuid : new HashSet<>(vanished)) {
             Player p = Bukkit.getPlayer(uuid);
-            if (p != null) {
-                revealPlayer(p);
-            }
+            if (p != null) revealPlayer(p);
         }
     }
 
     public void hideVanishedFrom(Player viewer) {
+        boolean canSee = viewer.hasPermission("vanish.see");
         for (UUID uuid : vanished) {
             Player v = Bukkit.getPlayer(uuid);
-            if (v != null && !viewer.hasPermission("vanish.see")) {
+            if (v != null && !canSee) {
                 hideFrom(viewer, v);
             }
         }
@@ -165,18 +165,8 @@ public class VanishManager {
 
     private void scheduleNextTick(Player player, Runnable task) {
         if (folia) {
-            try {
-                Method getScheduler = player.getClass().getMethod("getScheduler");
-                Object entityScheduler = getScheduler.invoke(player);
-                Method run = entityScheduler.getClass().getMethod("run", org.bukkit.plugin.Plugin.class, java.util.function.Consumer.class, Runnable.class);
-                run.invoke(entityScheduler, plugin, (java.util.function.Consumer<Object>) (o -> task.run()), null);
-                return;
-            } catch (Exception e) {
-                plugin.getLogger().severe("[Vanish+] Falha critica no scheduler Folia: " + e.getMessage());
-                log.log("ERROR", "FoliaScheduler", "Falha: " + e.getMessage());
-                task.run();
-                return;
-            }
+            player.getScheduler().run(plugin, scheduledTask -> task.run(), null);
+            return;
         }
         Bukkit.getScheduler().runTask(plugin, task);
     }

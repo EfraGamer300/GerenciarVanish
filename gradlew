@@ -33,7 +33,5 @@ else
     command -v java > /dev/null 2>&1 || die "ERROR: java not found. Install Java 21."
 fi
 
-DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
-APP_ARGS="$@"
-
-exec "$JAVACMD" $DEFAULT_JVM_OPTS -classpath "$CLASSPATH" org.gradle.wrapper.GradleWrapperMain "$APP_ARGS"
+DEFAULT_JVM_OPTS="-Xmx64m -Xms64m"
+exec "$JAVACMD" $DEFAULT_JVM_OPTS -classpath "$CLASSPATH" org.gradle.wrapper.GradleWrapperMain "$@"
