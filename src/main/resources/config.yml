@@ -16,6 +16,8 @@ settings:
   save-vanish-on-quit: true
   # Mostrar jogadores com permissao vanish.see no TAB
   show-vanished-in-tab: false
+  # Esconder mensagem de join/quit de jogadores em vanish
+  silent-joinquit: true
   # Cooldown entre toggles de vanish (ms, minimo 250)
   cooldown-ms: 1000
 

@@ -21,6 +21,7 @@ public class VanishManager {
     private final Map<UUID, Long> vanishCooldowns = Collections.synchronizedMap(new HashMap<>());
     private final Map<UUID, Boolean> prevAllowFlight = Collections.synchronizedMap(new HashMap<>());
     private final Map<UUID, Boolean> prevFlying = Collections.synchronizedMap(new HashMap<>());
+    private final Map<UUID, String> prevTabNames = Collections.synchronizedMap(new HashMap<>());
     private final LangManager lang;
     private final LogManager log;
     private final boolean folia;
@@ -53,6 +54,7 @@ public class VanishManager {
         vanished.remove(uuid);
         prevAllowFlight.remove(uuid);
         prevFlying.remove(uuid);
+        prevTabNames.remove(uuid);
     }
 
     public boolean isOnCooldown(UUID uuid) {
@@ -90,6 +92,11 @@ public class VanishManager {
             player.setFlying(player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR);
         });
 
+        if (!plugin.getConfig().getBoolean("settings.show-vanished-in-tab", false)) {
+            prevTabNames.put(uuid, player.getPlayerListName());
+            player.setPlayerListName("");
+        }
+
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (!online.hasPermission("vanish.see")) {
                 hideFrom(online, player);
@@ -108,6 +115,11 @@ public class VanishManager {
         vanished.remove(uuid);
         Boolean prevFlight = prevAllowFlight.remove(uuid);
         Boolean prevFly = prevFlying.remove(uuid);
+
+        String prevTab = prevTabNames.remove(uuid);
+        if (prevTab != null) {
+            player.setPlayerListName(prevTab.isEmpty() ? player.getName() : prevTab);
+        }
 
         scheduleNextTick(player, () -> {
             player.setInvisible(false);
@@ -165,8 +177,17 @@ public class VanishManager {
 
     private void scheduleNextTick(Player player, Runnable task) {
         if (folia) {
-            player.getScheduler().run(plugin, scheduledTask -> task.run(), null);
-            return;
+            try {
+                var getScheduler = player.getClass().getMethod("getScheduler");
+                var entityScheduler = getScheduler.invoke(player);
+                var run = entityScheduler.getClass().getMethod("run", org.bukkit.plugin.Plugin.class, Runnable.class, Runnable.class);
+                run.invoke(entityScheduler, plugin, task, null);
+                return;
+            } catch (Exception e) {
+                log.log("ERROR", "FoliaScheduler", "Falha: " + e.getMessage());
+                task.run();
+                return;
+            }
         }
         Bukkit.getScheduler().runTask(plugin, task);
     }

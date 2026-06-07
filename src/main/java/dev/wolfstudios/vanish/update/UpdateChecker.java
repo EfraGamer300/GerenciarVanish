@@ -24,7 +24,7 @@ public class UpdateChecker {
     public UpdateChecker(VanishPlugin plugin, LogManager log) {
         this.plugin = plugin;
         this.log = log;
-        this.currentVersion = plugin.getPluginMeta().getVersion();
+        this.currentVersion = plugin.getDescription().getVersion();
     }
 
     public void checkAsync() {
